@@ -85,7 +85,8 @@ h6{
 }
 
 a{
-  display:inline-block
+  display:inline-block;
+  text-decoration: none;
 }
 
 a:active,a:focus,a:hover{
@@ -722,6 +723,9 @@ table.table.table-bordered th{
 }
 .detail-section{
   margin-top:60px
+}
+.detail-img{
+  width: 30%;
 }
 /**/
 
