@@ -9,9 +9,7 @@
     padding:0;
     -webkit-box-sizing:border-box;
     -moz-box-sizing:border-box;
-    box-sizing:border-box;
-
-
+    box-sizing:border-box
 }
 
 body{
@@ -86,12 +84,11 @@ h6{
 }
 
 a{
-    display:inline-block;
-    text-decoration:none;
-
+    display:inline-block
 }
 
 a:active,a:focus,a:hover{
+    text-decoration:none;
     outline:0
 }
 
@@ -517,7 +514,7 @@ input.au-input.au-input-xl{
     background:#fff
 }
 .main-content.page-m{
-    padding:10% 15%!important
+    padding: 10% 30% 10% 5%
 }
 
 /* 
@@ -540,41 +537,27 @@ input.au-input.au-input-xl{
     margin-left: 5px;
 }
 .product-box{
-    margin-bottom:60px;
-    height: 300px;
+    margin-bottom:60px
 }
 .price{
-    margin:auto ;
+    margin:15px 0 0;
     font-weight:800;
     color:#0da8e4
 }
-
-
 .product-box h1{
     font-size:18px;
     border-bottom:1px solid #ccc;
     padding-bottom:5px;
     font-weight:600;
     padding-top:12px;
-    margin-bottom:7px;
-    display: flex;
-    justify-content: center;
-    align-items: center;  
+    margin-bottom:7px
 }
-
 .product-box h2{
     font-size:15px;
     padding-bottom:0;
     font-weight:500;
     color:#585858
 }
-
-.btn-primary{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
 
 /* 
  * ----------------------------
