@@ -1,3 +1,4 @@
+import { Luv2ShopFormService } from './../../services/luv2-shop-form.service';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 
@@ -7,12 +8,17 @@ import { FormGroup, FormBuilder } from '@angular/forms';
   styleUrls: ['./checkout.component.css'],
 })
 export class CheckoutComponent implements OnInit {
+  creditCardMonths: number[] = [];
+  creditCardYears: number[] = [];
   checkoutFormGroup: FormGroup;
 
   totalPrice: number = 0;
   totalQuantity: number = 0;
 
-  constructor(private formBuilder: FormBuilder) {}
+  constructor(
+    private formBuilder: FormBuilder,
+    private luv2ShopFormService: Luv2ShopFormService
+  ) {}
 
   ngOnInit(): void {
     this.checkoutFormGroup = this.formBuilder.group({
@@ -44,6 +50,18 @@ export class CheckoutComponent implements OnInit {
         expirationYear: [''],
       }),
     });
+    const startMonth: number = new Date().getMonth() + 1;
+    console.log('startMonth: ' + startMonth);
+    this.luv2ShopFormService
+      .GetCreditCardMonths(startMonth)
+      .subscribe((data) => {
+        console.log('Retrived Cart month: ' + JSON.stringify(data));
+        this.creditCardMonths = data;
+      });
+    this.luv2ShopFormService.getCreditCardYears().subscribe((data) => {
+      console.log('Retrived credit card years: ' + JSON.stringify(data));
+      this.creditCardYears = data;
+    });
   }
 
   copyShippingAddressToBillingAddress(event) {
@@ -66,5 +84,22 @@ export class CheckoutComponent implements OnInit {
       'The email address is ' +
         this.checkoutFormGroup.get('customer').value.email
     );
+  }
+  handelMonthsAndYears() {
+    const creditCardFormGroup = this.checkoutFormGroup.get('creditCard');
+    const currentYear: number = new Date().getFullYear();
+    const selectYear: number = Number(creditCardFormGroup.value.expirationYear);
+    let startMonth: number;
+    if (currentYear === selectYear) {
+      startMonth = new Date().getMonth() + 1;
+    } else {
+      startMonth = 1;
+    }
+    this.luv2ShopFormService
+      .GetCreditCardMonths(startMonth)
+      .subscribe((data) => {
+        console.log('Retrived Cart month: ' + JSON.stringify(data));
+        this.creditCardMonths = data;
+      });
   }
 }
