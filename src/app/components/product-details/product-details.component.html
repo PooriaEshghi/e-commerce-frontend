@@ -1,17 +1,19 @@
-<div class="detail-section">
-  <div class="container-fluid">
-    <img src="{{ product.imageUrl }}" class="detail-img" />
+<div class="main-content">
+  <div class="detail-section">
+    <img [src]="product.imageUrl | shopImage" [alt]="product.name" class="detail-img" />
 
-    <h3>{{ product.name }}</h3>
-    <div class="price">{{ product.unitPrice | currency : "USD" }}</div>
-    <button (click)="addToCart()" class="btn btn-primary btn-sm">
-      Add to cart
-    </button>
+    <div class="detail-copy">
+      <h1>{{ product.name }}</h1>
+      <div class="price">{{ product.unitPrice | currency : "EUR" }}</div>
+      <div class="detail-actions">
+        <button type="button" (click)="addToCart()" class="btn btn-primary">Add to cart</button>
+        <a *ngIf="authService.isAdmin()" [routerLink]="['/admin/products', product.id]" class="btn btn-info">Edit</a>
+      </div>
 
-    <hr />
-    <h4>Description</h4>
-    <p>{{ product.description }}</p>
+      <h2>Description</h2>
+      <p>{{ product.description }}</p>
 
-    <a routerLink="/products" class="mt-5">Back to Product List</a>
+      <a routerLink="/products" class="back-link">Back to catalog</a>
+    </div>
   </div>
 </div>

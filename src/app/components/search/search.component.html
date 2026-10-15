@@ -1,12 +1,8 @@
-<div class="form-header">
-
-    <input #myInput type="text" 
-           placeholder="Search for products ..."
+<form class="form-header" (submit)="$event.preventDefault(); doSearch(myInput.value)">
+    <label class="visually-hidden" for="product-search">Search for products</label>
+    <input #myInput id="product-search" type="search"
+           placeholder="Search for products"
            class="au-input au-input-xl"
-           (keyup.enter)="doSearch(myInput.value)"  />
-
-    <button (click)="doSearch(myInput.value)" class="au-btn-submit">
-        Search
-    </button>
-
-</div>
+           (keyup.enter)="doSearch(myInput.value)" />
+    <button type="submit" class="au-btn-submit">Search</button>
+</form>

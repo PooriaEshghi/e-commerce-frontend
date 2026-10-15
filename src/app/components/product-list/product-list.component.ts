@@ -12,13 +12,13 @@ import { CartItem } from 'src/app/common/cart-item';
 })
 export class ProductListComponent implements OnInit {
   products: Product[] = [];
-  currentCategoryId: number = 1;
-  previousCategoryId: number = 1;
+  currentCategoryId: number = 0;
+  previousCategoryId: number = 0;
   searchMode: boolean = false;
 
   // new properties for pagination
   thePageNumber: number = 1;
-  thePageSize: number = 5;
+  thePageSize: number = 20;
   theTotalElements: number = 0;
 
   previousKeyword: string = '';
@@ -77,8 +77,8 @@ export class ProductListComponent implements OnInit {
       // get the "id" param string. convert string to a number using the "+" symbol
       this.currentCategoryId = +this.route.snapshot.paramMap.get('id')!;
     } else {
-      // not category id available ... default to category id 1
-      this.currentCategoryId = 1;
+      // All has no category id and must not fall back to Books.
+      this.currentCategoryId = 0;
     }
 
     //

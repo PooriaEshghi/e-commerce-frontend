@@ -1,0 +1,15 @@
+.demo-note {
+  margin-bottom: 1rem;
+}
+
+.auth-switch {
+  margin-top: 1rem;
+}
+
+.auth-switch button {
+  background: none;
+  border: 0;
+  color: #205aa7;
+  padding: 0;
+  cursor: pointer;
+}

@@ -1,0 +1,5 @@
+<a *ngIf="authService.isLoggedIn()" routerLink="/order-history" class="admin-link">Orders</a>
+<a *ngIf="authService.isAdmin()" routerLink="/admin/products" class="admin-link">Admin</a>
+<a *ngIf="!authService.isLoggedIn()" routerLink="/login" class="admin-link">Login</a>
+<span *ngIf="authService.isLoggedIn()" class="header-user">{{ authService.getEmail() }}</span>
+<button *ngIf="authService.isLoggedIn()" type="button" class="header-button" (click)="logout()">Logout</button>

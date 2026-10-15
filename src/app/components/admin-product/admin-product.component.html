@@ -1,0 +1,139 @@
+<div class="main-content page-m">
+  <div class="section-content section-content-p30">
+    <div class="container-fluid">
+      <form [formGroup]="productFormGroup" (ngSubmit)="onSubmit()">
+        <div class="form-area">
+          <h3>{{ editingId ? 'Edit product' : 'New product' }}</h3>
+          <p class="admin-note">Saving a product needs an admin login. The public catalog stays read-only.</p>
+          <p *ngIf="editingId"><a routerLink="/admin/products">Create a new product instead</a></p>
+
+          <div *ngIf="errorMessage" class="alert alert-danger mt-1">{{ errorMessage }}</div>
+
+          <div class="row">
+            <div class="col-md-2"><label>Category</label></div>
+            <div class="col-md-9">
+              <div class="input-space">
+                <select formControlName="categoryId">
+                  <option value="">Select a category</option>
+                  <option *ngFor="let category of productCategories" [value]="category.id">
+                    {{ category.categoryName }}
+                  </option>
+                </select>
+                <div *ngIf="categoryId.invalid && (categoryId.dirty || categoryId.touched)" class="alert alert-danger mt-1">
+                  Category is required
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-2"><label>SKU</label></div>
+            <div class="col-md-9">
+              <div class="input-space">
+                <input formControlName="sku" type="text" />
+                <div *ngIf="sku.invalid && (sku.dirty || sku.touched)" class="alert alert-danger mt-1">
+                  <div *ngIf="sku.errors['required'] || sku.errors['notOnlyWhitespace']">SKU is required</div>
+                  <div *ngIf="sku.errors['minlength']">SKU must be at least 2 characters long</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-2"><label>Name</label></div>
+            <div class="col-md-9">
+              <div class="input-space">
+                <input formControlName="name" type="text" />
+                <div *ngIf="name.invalid && (name.dirty || name.touched)" class="alert alert-danger mt-1">
+                  <div *ngIf="name.errors['required'] || name.errors['notOnlyWhitespace']">Name is required</div>
+                  <div *ngIf="name.errors['minlength']">Name must be at least 2 characters long</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-2"><label>Description</label></div>
+            <div class="col-md-9">
+              <div class="input-space">
+                <textarea formControlName="description" rows="3"></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-2"><label>Price</label></div>
+            <div class="col-md-9">
+              <div class="input-space">
+                <input formControlName="unitPrice" type="number" min="0.01" step="0.01" />
+                <div *ngIf="unitPrice.invalid && (unitPrice.dirty || unitPrice.touched)" class="alert alert-danger mt-1">
+                  Price must be greater than zero
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-2"><label>In stock</label></div>
+            <div class="col-md-9">
+              <div class="input-space">
+                <input formControlName="unitsInStock" type="number" min="0" step="1" />
+                <div *ngIf="unitsInStock.invalid && (unitsInStock.dirty || unitsInStock.touched)" class="alert alert-danger mt-1">
+                  Stock must be zero or greater
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-2"><label>Image</label></div>
+            <div class="col-md-9">
+              <div class="input-space">
+                <input type="file" accept="image/png,image/jpeg,image/gif,image/webp" (change)="onImageSelected($event)" />
+                <p>JPEG, PNG, GIF, or WebP, up to 2 MB. You can still paste an existing asset path.</p>
+                <input formControlName="imageUrl" type="text" placeholder="assets/images/products/placeholder.png" />
+                <img *ngIf="imageUrl.value" [src]="imageUrl.value | shopImage" alt="Product image preview" width="120" />
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-2"><label>Active</label></div>
+            <div class="col-md-9">
+              <div class="input-space">
+                <input formControlName="active" type="checkbox" />
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-9">
+              <button type="submit" class="btn btn-info">{{ editingId ? 'Update product' : 'Save product' }}</button>
+            </div>
+          </div>
+        </div>
+      </form>
+
+      <div *ngIf="successMessage" class="alert alert-success mt-3">{{ successMessage }}</div>
+
+      <h3 class="mt-4">Catalog</h3>
+      <table class="table table-bordered" *ngIf="catalog.length > 0">
+        <tr>
+          <th>Name</th>
+          <th>Price</th>
+          <th>In stock</th>
+          <th>Category</th>
+          <th></th>
+        </tr>
+        <tr *ngFor="let product of catalog">
+          <td>{{ product.name }}</td>
+          <td>{{ product.unitPrice | currency:'EUR' }}</td>
+          <td>{{ product.unitsInStock }}</td>
+          <td>{{ categoryName(product.categoryId) }}</td>
+          <td><a [routerLink]="['/admin/products', product.id]">Edit</a></td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</div>

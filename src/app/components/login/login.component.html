@@ -1,0 +1,104 @@
+<div class="main-content page-m">
+  <div class="section-content section-content-p30">
+    <div class="container-fluid">
+
+      <form *ngIf="mode === 'login'" [formGroup]="loginFormGroup" (ngSubmit)="onLogin()">
+        <div class="form-area">
+          <h3>Login</h3>
+          <p class="demo-note">Demo admin: admin@ecommerce.local / admin123</p>
+          <div *ngIf="errorMessage" class="alert alert-danger mt-1">{{ errorMessage }}</div>
+
+          <div class="row">
+            <div class="col-md-2"><label for="login-email">Email</label></div>
+            <div class="col-md-9">
+              <div class="input-space">
+                <input id="login-email" formControlName="email" type="email" autocomplete="username" />
+                <div *ngIf="loginEmail.invalid && (loginEmail.dirty || loginEmail.touched)" class="alert alert-danger mt-1">
+                  A valid email is required
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-2"><label for="login-password">Password</label></div>
+            <div class="col-md-9">
+              <div class="input-space">
+                <input id="login-password" formControlName="password" type="password" autocomplete="current-password" />
+                <div *ngIf="loginPassword.invalid && (loginPassword.dirty || loginPassword.touched)" class="alert alert-danger mt-1">
+                  Password is required
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-9">
+              <button type="submit" class="btn btn-info">Login</button>
+              <p class="auth-switch">No account yet? <button type="button" (click)="showRegister()">Create one</button></p>
+            </div>
+          </div>
+        </div>
+      </form>
+
+      <form *ngIf="mode === 'register'" [formGroup]="registerFormGroup" (ngSubmit)="onRegister()">
+        <div class="form-area">
+          <h3>Create account</h3>
+          <div *ngIf="errorMessage" class="alert alert-danger mt-1">{{ errorMessage }}</div>
+
+          <div class="row">
+            <div class="col-md-2"><label for="register-first-name">First name</label></div>
+            <div class="col-md-9">
+              <div class="input-space">
+                <input id="register-first-name" formControlName="firstName" type="text" autocomplete="given-name" />
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-2"><label for="register-last-name">Last name</label></div>
+            <div class="col-md-9">
+              <div class="input-space">
+                <input id="register-last-name" formControlName="lastName" type="text" autocomplete="family-name" />
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-2"><label for="register-email">Email</label></div>
+            <div class="col-md-9">
+              <div class="input-space">
+                <input id="register-email" formControlName="email" type="email" autocomplete="email" />
+                <div *ngIf="registerEmail.invalid && (registerEmail.dirty || registerEmail.touched)" class="alert alert-danger mt-1">
+                  A valid email is required
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-2"><label for="register-password">Password</label></div>
+            <div class="col-md-9">
+              <div class="input-space">
+                <input id="register-password" formControlName="password" type="password" autocomplete="new-password" />
+                <div *ngIf="registerPassword.invalid && (registerPassword.dirty || registerPassword.touched)" class="alert alert-danger mt-1">
+                  Password must be at least 6 characters
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-9">
+              <button type="submit" class="btn btn-info">Create account</button>
+              <p class="auth-switch">Already registered? <button type="button" (click)="showLogin()">Login</button></p>
+            </div>
+          </div>
+        </div>
+      </form>
+
+    </div>
+  </div>
+</div>

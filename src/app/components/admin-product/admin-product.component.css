@@ -1,0 +1,8 @@
+.admin-note {
+  margin-bottom: 1rem;
+}
+
+textarea,
+select {
+  width: 100%;
+}

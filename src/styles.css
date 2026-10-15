@@ -159,6 +159,27 @@ aside.menu-sidebar.d-none.d-lg-block.clr{
     transform:translateY(-50%)
 }
 
+.header-actions{
+    display:flex;
+    align-items:center
+}
+
+.admin-link,
+.header-button{
+    color:#fff;
+    margin-right:1.25rem;
+    font-weight:600;
+    background:transparent;
+    border:0;
+    padding:0;
+    cursor:pointer
+}
+
+.header-user{
+    color:#fff;
+    margin-right:1.25rem
+}
+
 .header-wrap{
     display:-webkit-box;
     display:-webkit-flex;

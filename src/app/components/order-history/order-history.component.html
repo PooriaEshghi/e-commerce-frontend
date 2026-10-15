@@ -1,0 +1,33 @@
+<div class="main-content">
+  <div class="section-content section-content-p30">
+    <div class="container-fluid">
+      <h3>Your orders</h3>
+      <div *ngIf="errorMessage" class="alert alert-danger mt-1">{{ errorMessage }}</div>
+      <p *ngIf="!errorMessage && orders.length === 0">You have no orders yet.</p>
+
+      <div *ngFor="let order of orders" class="order-block">
+        <p>
+          <strong>{{ order.orderTrackingNumber }}</strong>
+          — {{ order.status }}
+          — {{ order.dateCreated | date:'medium' }}
+        </p>
+        <p>Total: {{ order.totalPrice | currency:'EUR' }} ({{ order.totalQuantity }} items)</p>
+        <table class="table table-bordered">
+          <tr>
+            <th>Product</th>
+            <th>Quantity</th>
+            <th>Price</th>
+          </tr>
+          <tr *ngFor="let item of order.items">
+            <td>
+              <img *ngIf="item.imageUrl" [src]="item.imageUrl | shopImage" width="60" [alt]="item.name" />
+              {{ item.name }}
+            </td>
+            <td>{{ item.quantity }}</td>
+            <td>{{ item.unitPrice | currency:'EUR' }}</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

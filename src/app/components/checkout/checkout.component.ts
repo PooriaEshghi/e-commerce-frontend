@@ -13,6 +13,7 @@ import { Order } from 'src/app/common/order';
 import { OrderItem } from 'src/app/common/order-item';
 import { Purchase } from 'src/app/common/purchase';
 import { State } from 'src/app/common/state';
+import { AuthService } from 'src/app/services/auth.service';
 import { CartService } from 'src/app/services/cart.service';
 import { CheckoutService } from 'src/app/services/checkout.service';
 import { Luv2ShopValidators } from 'src/app/validators/luv2-shop-validators';
@@ -32,12 +33,14 @@ export class CheckoutComponent implements OnInit {
 
   totalPrice: number = 0;
   totalQuantity: number = 0;
+  isLoggedIn = false;
 
   constructor(
     private formBuilder: FormBuilder,
     private luv2ShopFormService: Luv2ShopFormService,
     private cartService: CartService,
     private checkoutService: CheckoutService,
+    private authService: AuthService,
     private router: Router
   ) {}
 
@@ -117,6 +120,12 @@ export class CheckoutComponent implements OnInit {
         expirationYear: [''],
       }),
     });
+    this.isLoggedIn = this.authService.isLoggedIn();
+    if (this.isLoggedIn) {
+      const email = this.checkoutFormGroup.get('customer.email');
+      email.setValue(this.authService.getEmail());
+      email.disable();
+    }
     const startMonth: number = new Date().getMonth() + 1;
     console.log('startMonth: ' + startMonth);
     this.luv2ShopFormService
@@ -240,7 +249,7 @@ export class CheckoutComponent implements OnInit {
     let purchase = new Purchase();
 
     // populate purchase - customer
-    purchase.customer = this.checkoutFormGroup.controls['customer'].value;
+    purchase.customer = (this.checkoutFormGroup.get('customer') as FormGroup).getRawValue();
 
     // populate purchase - shipping address
     purchase.shippingAddress =
@@ -281,7 +290,7 @@ export class CheckoutComponent implements OnInit {
         this.resetCart();
       },
       error: (err) => {
-        alert(`There was an error: ${err.message}`);
+        alert(err?.error?.message || 'There was an error placing the order.');
       },
     });
   }

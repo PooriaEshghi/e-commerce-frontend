@@ -14,6 +14,8 @@ export class ProductService {
 
   private categoryUrl = 'http://localhost:8080/api/product-category';
 
+  private adminUrl = 'http://localhost:8080/api/admin/products';
+
   constructor(private httpClient: HttpClient) { }
 
   getProduct(theProductId: number): Observable<Product> {
@@ -28,9 +30,10 @@ export class ProductService {
                          thePageSize: number, 
                          theCategoryId: number): Observable<GetResponseProducts> {
 
-    // need to build URL based on category id, page and size 
-    const searchUrl = `${this.baseUrl}/search/findByCategoryId?id=${theCategoryId}`
-                    + `&page=${thePage}&size=${thePageSize}`;
+    // Category 0 is the All view: every product, not only Books.
+    const searchUrl = theCategoryId > 0
+                    ? `${this.baseUrl}/search/findByCategoryId?id=${theCategoryId}&page=${thePage}&size=${thePageSize}`
+                    : `${this.baseUrl}?page=${thePage}&size=${thePageSize}`;
 
     return this.httpClient.get<GetResponseProducts>(searchUrl);
   }
@@ -76,6 +79,41 @@ export class ProductService {
     );
   }
 
+  getAdminProducts(): Observable<AdminProduct[]> {
+    return this.httpClient.get<AdminProduct[]>(this.adminUrl);
+  }
+
+  getAdminProduct(productId: number): Observable<AdminProduct> {
+    return this.httpClient.get<AdminProduct>(`${this.adminUrl}/${productId}`);
+  }
+
+  createProduct(product: NewProduct): Observable<AdminProduct> {
+    return this.httpClient.post<AdminProduct>(this.adminUrl, this.toAdminBody(product));
+  }
+
+  updateProduct(productId: number, product: NewProduct): Observable<AdminProduct> {
+    return this.httpClient.put<AdminProduct>(`${this.adminUrl}/${productId}`, this.toAdminBody(product));
+  }
+
+  uploadProductImage(file: File): Observable<UploadedImage> {
+    const body = new FormData();
+    body.append('file', file);
+    return this.httpClient.post<UploadedImage>(`${this.adminUrl}/images`, body);
+  }
+
+  private toAdminBody(product: NewProduct) {
+    return {
+      sku: product.sku,
+      name: product.name,
+      description: product.description,
+      unitPrice: product.unitPrice,
+      unitsInStock: product.unitsInStock,
+      categoryId: Number(product.categoryId),
+      imageUrl: product.imageUrl,
+      active: product.active
+    };
+  }
+
 }
 
 interface GetResponseProducts {
@@ -94,4 +132,31 @@ interface GetResponseProductCategory {
   _embedded: {
     productCategory: ProductCategory[];
   }
+}
+
+export interface NewProduct {
+  sku: string;
+  name: string;
+  description: string;
+  unitPrice: number;
+  unitsInStock: number;
+  categoryId: number;
+  imageUrl: string;
+  active: boolean;
+}
+
+export interface UploadedImage {
+  imageUrl: string;
+}
+
+export interface AdminProduct {
+  id: number;
+  sku: string;
+  name: string;
+  description: string;
+  unitPrice: number;
+  unitsInStock: number;
+  categoryId: number;
+  imageUrl: string;
+  active: boolean;
 }
